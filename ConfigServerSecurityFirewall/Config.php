@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 trait Config
 {
     use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
+    use \Diepxuan\System\ConfigServerSecurityFirewall\Port;
 
     protected $config = null;
 
@@ -21,6 +22,9 @@ trait Config
 
         $this->config->put('TESTING', "0");
         $this->config->put('IGNORE_ALLOW', "1");
+
+        $this->config->put('DYNDNS', "300");
+
         $this->config->put('SYNFLOOD', "1");
         $this->config->put('SYNFLOOD_RATE', "75/s");
         $this->config->put('SYNFLOOD_BURST', "25");
@@ -31,9 +35,9 @@ trait Config
         $this->config->put('LF_DISTATTACK', "0");
         $this->config->put('ICMP_IN', "0");
 
-        $this->config->put('TCP_IN', "???");
+        $this->config->put('TCP_IN', $this->getPortLst('tcp'));
         $this->config->put('TCP_OUT', "1:65535");
-        $this->config->put('UDP_IN', "???");
+        $this->config->put('UDP_IN', $this->getPortLst('udp'));
         $this->config->put('UDP_OUT', "1:65535");
         $this->config->put('CC_DENY', "");
 
@@ -44,12 +48,6 @@ trait Config
         $this->config->put('CUSTOM1_LOG', "/var/log/syslog");
 
         return $this->config;
-        // [DYNDNS = "300"';]
-        //         $csf = Str::replaceArray('???', [
-        //             $model->portopen['tcp'],
-        //             $model->portopen['udp'],
-        //         ], $csf);
-        //         return $csf;
     }
 
     public function getConfig(): string
