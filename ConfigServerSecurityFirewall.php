@@ -10,10 +10,13 @@ use Illuminate\Support\Str;
 
 class ConfigServerSecurityFirewall extends Model
 {
+    use \Diepxuan\System\ConfigServerSecurityFirewall\Config;
+    use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
+
     public function isInstall(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => Str::of(Process::run('command -v csf')->output())->isNotEmpty(),
+            get: fn (mixed $value, array $attributes) => ConfigServerSecurityFirewall::isInstalled(),
         );
     }
 
@@ -22,6 +25,11 @@ class ConfigServerSecurityFirewall extends Model
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => trim(preg_replace('/csf: ([\w\d]+)/i', '$1', Process::run("sudo csf -v | grep csf:")->output())),
         );
+    }
+
+    public static function isInstalled(): bool
+    {
+        return Str::of(Process::run('command -v csf')->output())->isNotEmpty();
     }
 
     /**
