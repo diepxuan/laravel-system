@@ -1,30 +1,29 @@
 <?php
 
-namespace Diepxuan\System\Vm;
+namespace Diepxuan\System\ConfigServerSecurityFirewall;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Arr;
 use Diepxuan\System\Vm;
+use App\Helpers\Str;
 
-class Portforward
+trait Cluster
 {
-    const PORTTCP = "tcp";
-    const PORTUDP = "udp";
+    private static $PORTTCP = "tcp";
+    private static $PORTUDP = "udp";
 
-    /**
-     * Cast the given value.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
-    public function get(Vm $model, string $key, mixed $value, array $attributes)
+    public static function getPortForward()
     {
+        $model = Vm::getCurrent();
+        $value = '';
+
         foreach ($model->clients as $vm) {
             $value .= "\n";
 
             $portopen = $vm->portopen;
-            foreach ([self::PORTTCP, self::PORTUDP] as $type) {
+            foreach ([self::$PORTTCP, self::$PORTUDP] as $type) {
                 $ports = $model->port[$type];
                 $ports = explode(',', $ports);
 
@@ -42,16 +41,6 @@ class Portforward
         }
         $value = trim($value);
 
-        return $value;
-    }
-
-    /**
-     * Prepare the given value for storage.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
-    public function set(Vm $model, string $key, mixed $value, array $attributes)
-    {
         return $value;
     }
 }

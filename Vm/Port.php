@@ -2,8 +2,7 @@
 
 namespace Diepxuan\System\Vm;
 
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Diepxuan\System\Vm;
 
 class Port
