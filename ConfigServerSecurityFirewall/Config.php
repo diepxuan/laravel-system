@@ -2,9 +2,10 @@
 
 namespace Diepxuan\System\ConfigServerSecurityFirewall;
 
-use Diepxuan\System\ConfigServerSecurityFirewall as Model;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait Config
 {
@@ -53,5 +54,18 @@ trait Config
             return "$key = \"$value\"";
         })->implode("\n");
         return Str::of($config)->trim();
+    }
+
+    public static function localConfig(string $key = null, string $val = null): string
+    {
+        if (!is_null($key)) {
+            $key = Str::of($key);
+            if (!is_null($val)) {
+                $val = Str::of($val);
+                return Process::run("sudo sed -i 's|$key = .*|$key = \"$val\"|' /etc/csf/csf.conf")->output();
+            }
+            return Process::run("sudo cat /etc/csf/csf.conf | grep '$key = '")->output();
+        }
+        return Str::of(Process::run("sudo cat /etc/csf/csf.conf")->output());
     }
 }

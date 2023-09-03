@@ -16,20 +16,25 @@ class ConfigServerSecurityFirewall extends Model
     public function isInstall(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => ConfigServerSecurityFirewall::isInstalled(),
-        );
-    }
-
-    public function version(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value, array $attributes) => trim(preg_replace('/csf: ([\w\d]+)/i', '$1', Process::run("sudo csf -v | grep csf:")->output())),
+            get: fn (mixed $value, array $attributes) => self::isInstalled(),
         );
     }
 
     public static function isInstalled(): bool
     {
         return Str::of(Process::run('command -v csf')->output())->isNotEmpty();
+    }
+
+    public static function getVersion()
+    {
+        return Str::of(preg_replace('/csf: ([\w\d]+)/i', '$1', Process::run("sudo csf -v | grep csf:")->output()))->trim();
+    }
+
+    public function version(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => self::getVersion(),
+        );
     }
 
     /**
