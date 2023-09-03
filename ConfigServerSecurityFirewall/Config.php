@@ -68,4 +68,9 @@ trait Config
         }
         return Str::of(Process::run("sudo cat /etc/csf/csf.conf")->output());
     }
+
+    public static function apply($flag = true)
+    {
+        if ($flag) return Process::run("sudo csf -ra")->output();
+    }
 }
