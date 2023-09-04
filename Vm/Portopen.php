@@ -1,10 +1,10 @@
 <?php
 
-namespace Diepxuan\System\Casts\Vm;
+namespace Diepxuan\System\Vm;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Sys\Vm;
+use Diepxuan\System\Vm;
 
 class Portopen
 {

@@ -253,8 +253,8 @@ mq-ww.ecouser.net";
         );
     }
 
-    public static function getCurrent(): Vm
+    public static function getCurrent($vmId = null): Vm
     {
-        return VM::updateOrCreate(["vm_id" => OS::getHostFullName()]);
+        return VM::updateOrCreate(["vm_id" => $vmId ?: OS::getHostFullName()]);
     }
 }

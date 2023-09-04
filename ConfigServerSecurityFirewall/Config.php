@@ -12,9 +12,10 @@ trait Config
     use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
     use \Diepxuan\System\ConfigServerSecurityFirewall\Port;
 
+    private static $CONFPATH = '/etc/csf/csf.conf';
     protected $config = null;
 
-    public static function getConfigLst(): Collection
+    public static function csfConfigLst(): Collection
     {
         $config = collect();
 
@@ -48,24 +49,47 @@ trait Config
         return $config;
     }
 
-    public function getConfig(): string
+    public function csfConfig(): string
     {
-        $config = $this->getConfigLst()->map(function ($value, $key) {
+        $config = $this->csfConfigLst()->map(function ($value, $key) {
             return "$key = \"$value\"";
         })->implode("\n");
         return Str::of($config)->trim();
     }
 
-    public static function localConfig(string $key = null, string $val = null): string
+    public static function csfLocalConfig(string $key = null, string $val = null): string
     {
         if (!is_null($key)) {
-            $key = Str::of($key);
+            $key = Str::of($key)->trim();
             if (!is_null($val)) {
-                $val = Str::of($val);
-                return Process::run("sudo sed -i 's|$key = .*|$key = \"$val\"|' /etc/csf/csf.conf")->output();
+                $val = Str::of($val)->trim();
+                return Process::run(
+                    sprintf(
+                        "sudo sed -i 's|$key = .*|$key = \"$val\"|' %s",
+                        self::$CONFPATH
+                    )
+                )->output();
             }
-            return Process::run("sudo cat /etc/csf/csf.conf | grep '$key = '")->output();
+            return Str::of(Process::run(
+                sprintf("sudo cat %s | grep '$key = '", self::$CONFPATH)
+            )->output())
+                ->replace("$key = ", '')->trim()->trim('"');
         }
-        return Str::of(Process::run("sudo cat /etc/csf/csf.conf")->output());
+        return Str::of(Process::run(
+            sprintf("sudo cat %s", self::$CONFPATH)
+        )->output());
+    }
+
+    public static function rebuildConfiguration(): bool
+    {
+        $flag = false;
+        self::csfConfigLst()->map(function ($val, $key) use ($flag) {
+            $orgVal = self::csfLocalConfig($key);
+            $flag = $flag ?: $key != $orgVal;
+            if ($flag)
+                self::csfLocalConfig($key, $val);
+        });
+
+        return $flag;
     }
 }
