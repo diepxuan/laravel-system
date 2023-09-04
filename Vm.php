@@ -52,11 +52,8 @@ class Vm extends Model
      * @var array
      */
     protected $casts = [
-        // 'csf'         => \App\Casts\Vm\Csf::class,
-        // 'csf_cluster' => \App\Casts\Vm\CsfCluster::class,
         'port'        => \Diepxuan\System\Vm\Port::class,
         'portopen'    => \Diepxuan\System\Vm\Portopen::class,
-        // 'portforward' => \Diepxuan\System\Casts\Vm\Portforward::class,
         // 'tunel'       => \Diepxuan\System\Casts\Vm\Tunel::class,
         'wgkey'       => 'array',
         'gateway'     => 'array',
@@ -256,8 +253,8 @@ mq-ww.ecouser.net";
         );
     }
 
-    public static function getCurrent(): Vm
+    public static function getCurrent($vmId = null): Vm
     {
-        return VM::updateOrCreate(["vm_id" => OS::getHostFullName()]);
+        return VM::updateOrCreate(["vm_id" => $vmId ?: OS::getHostFullName()]);
     }
 }

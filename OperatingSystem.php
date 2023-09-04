@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class OperatingSystem extends Model
 {
     use \Diepxuan\System\Trait\OperatingSystem;
+    use \Diepxuan\System\Trait\OperatingSystemNetwork;
 
     public function hostName(): Attribute
     {

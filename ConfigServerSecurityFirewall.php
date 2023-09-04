@@ -12,6 +12,8 @@ class ConfigServerSecurityFirewall extends Model
 {
     use \Diepxuan\System\ConfigServerSecurityFirewall\Config;
     use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
+    use \Diepxuan\System\ConfigServerSecurityFirewall\Port;
+    use \Diepxuan\System\ConfigServerSecurityFirewall\CsfPost;
 
     public function isInstall(): Attribute
     {
@@ -54,5 +56,13 @@ class ConfigServerSecurityFirewall extends Model
         if ($cmdPath == $cmdDefault) return;
         if (!File::isFile($cmdDefault))
             Process::run("sudo ln $(which $command) /sbin/$command");
+    }
+
+    public static function apply()
+    {
+        $flag = false;
+        $flag = $flag ?: self::rebuildConfiguration();
+        $flag = $flag ?: self::rebuildIptablesRules();
+        if ($flag) return Process::run("sudo csf -ra")->output();
     }
 }
