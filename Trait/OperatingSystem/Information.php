@@ -1,13 +1,13 @@
 <?php
 
-namespace Diepxuan\System\Trait;
+namespace Diepxuan\System\Trait\OperatingSystem;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
-trait OperatingSystem
+trait Information
 {
     public static function getIpWan(): string
     {

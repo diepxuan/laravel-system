@@ -9,8 +9,9 @@ use Illuminate\Support\Str;
 
 class OperatingSystem extends Model
 {
-    use \Diepxuan\System\Trait\OperatingSystem;
-    use \Diepxuan\System\Trait\OperatingSystemNetwork;
+    use \Diepxuan\System\Trait\OperatingSystem\Information;
+    use \Diepxuan\System\Trait\OperatingSystem\Network;
+    use \Diepxuan\System\Trait\OperatingSystem\Storage;
 
     public function hostName(): Attribute
     {
