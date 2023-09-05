@@ -1,13 +1,13 @@
 <?php
 
-namespace Diepxuan\System\Trait;
+namespace Diepxuan\System\Trait\OperatingSystem;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 
-trait OperatingSystemNetwork
+trait Network
 {
     public static function getRouteDefault(): string
     {
