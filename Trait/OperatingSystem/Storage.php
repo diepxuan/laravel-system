@@ -9,23 +9,31 @@ use Illuminate\Support\Str;
 
 trait Storage
 {
+    private static $swapPath = "/swap.img";
+
+    public static function sysSwapCheck(): bool
+    {
+        return Str::of(Process::pipe([
+            sprintf("swapon -s | grep %s | awk '{print $1}'", self::$swapPath),
+        ])->output())->trim()->is(self::$swapPath);
+    }
     public static function sysSwapOff(): string
     {
         return Str::of(Process::pipe([
-            'sudo swapoff -v /swapfile',
-            'sudo rm /swapfile',
+            sprintf('sudo swapoff -v %s', self::$swapPath),
+            sprintf('sudo rm %s', self::$swapPath),
         ])->output())->trim();
     }
 
     public static function sysSwapOn(): string
     {
-        self::sysSwapOff();
+        if (self::sysSwapCheck()) return 'swap is enabled';
         return Str::of(Process::pipe([
-            'sudo rm -rf /swapfile',
-            'sudo fallocate -l 2G /swapfile',
-            'sudo chmod 600 /swapfile',
-            'sudo mkswap /swapfile',
-            'sudo swapon /swapfile',
+            sprintf('sudo rm -rf %s', self::$swapPath),
+            sprintf('sudo fallocate -l 2G %s', self::$swapPath),
+            sprintf('sudo chmod 600 %s', self::$swapPath),
+            sprintf('sudo mkswap %s', self::$swapPath),
+            sprintf('sudo swapon %s', self::$swapPath),
         ])->output())->trim();
     }
 }
