@@ -28,11 +28,6 @@ class Service extends Model
      */
     protected static $rows = [
         [
-            'name'    => 'test',
-            'service' => 'ductnd',
-            'package' => 'ductn',
-        ],
-        [
             'name'    => 'httpd',
             'service' => 'apache2',
             'package' => 'apache2',
