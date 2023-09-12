@@ -52,7 +52,8 @@ class Wg
     public static function keyReNew()
     {
         $keydir = self::$keydir;
-        return Str::of(Process::run("sudo cat $keydir/server_private.key")->output())->trim();
+        Str::of(Process::run("sudo rm -rf $keydir/*")->output())->trim();
+        self::keyGen();
     }
 
     public static function keyGen()

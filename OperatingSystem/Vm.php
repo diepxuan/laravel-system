@@ -5,6 +5,8 @@ namespace Diepxuan\System\OperatingSystem;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Diepxuan\System\OperatingSystem as Os;
 use Diepxuan\System\Service\Ddns;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -166,16 +168,16 @@ mq-ww.ecouser.net";
     public function wgPri(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => array_replace(['', ''], $this->wgkey ?: [])[0],
-            set: fn (mixed $value, array $attributes) => $this->wgkey[0] = $value
+            get: fn (mixed $value, array $attributes) => $value ??= array_replace(['', ''], $this->wgkey)[0],
+            // set: fn (mixed $value, array $attributes) => $this->wgkey = dd(array_replace(['', ''], Str::of($attributes['wgkey'])->replaceStart('["', '')->replaceEnd('"]', '')->explode('","')->toArray(), [0 => $value])
         );
     }
 
     public function wgPub(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => array_replace(['', ''], $this->wgkey ?: [])[1],
-            set: fn (mixed $value, array $attributes) => $this->wgkey[1] = $value
+            get: fn (mixed $value, array $attributes) => $value ??= array_replace(['', ''], $this->wgkey)[1],
+            // set: fn (mixed $value, array $attributes) => $value
         );
     }
 
@@ -256,6 +258,20 @@ mq-ww.ecouser.net";
 
     public static function getCurrent($vmId = null): Vm
     {
-        return VM::updateOrCreate(["vm_id" => $vmId ?: OS::getHostFullName()]);
+        return Vm::updateOrCreate(["vm_id" => $vmId ?: OS::getHostFullName()]);
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::updating(function (Vm $model) {
+            $model->wgkey = [$model->wg_pri, $model->wg_pub];
+            unset($model->wg_pri);
+            unset($model->wg_pub);
+        });
     }
 }

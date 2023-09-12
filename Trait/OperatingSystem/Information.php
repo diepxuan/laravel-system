@@ -26,8 +26,8 @@ trait Information
 
     public static function getHostFullName(): string
     {
-        $hostName   = OperatingSystem::getHostName();
-        $hostDomain = OperatingSystem::getHostDomain();
+        $hostName   = self::getHostName();
+        $hostDomain = self::getHostDomain();
         return "$hostName.$hostDomain";
     }
 
