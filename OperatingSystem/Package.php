@@ -12,6 +12,14 @@ class Package extends Model
 {
     public static function isInstalled($package): bool
     {
-        return Str::of(Process::run("dpkg -s $package 2>/dev/null | grep 'install ok installed' >/dev/null 2>&1 && echo isInstalled")->output())->trim()->exactly('isInstalled');
+        $package = is_array($package) ? $package : func_get_args();
+        return collect($package)
+            ->map(function ($package) {
+                return Str::of(Process::run("dpkg -s $package 2>/dev/null | grep 'install ok installed' >/dev/null 2>&1 && echo isInstalled")->output())->trim()->exactly('isInstalled');
+            })
+            ->filter(function ($flag) {
+                return !$flag;
+            })
+            ->isEmpty();
     }
 }

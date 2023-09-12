@@ -166,7 +166,7 @@ mq-ww.ecouser.net";
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => array_replace(['', ''], $this->wgkey ?: [])[0],
-            // set: fn (mixed $value, array $attributes) => $value ?: Str::sanitizeString($attributes['name'])
+            set: fn (mixed $value, array $attributes) => $this->wgkey[0] = $value
         );
     }
 
@@ -174,7 +174,7 @@ mq-ww.ecouser.net";
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => array_replace(['', ''], $this->wgkey ?: [])[1],
-            // set: fn (mixed $value, array $attributes) => $value ?: Str::sanitizeString($attributes['name'])
+            set: fn (mixed $value, array $attributes) => $this->wgkey[1] = $value
         );
     }
 
