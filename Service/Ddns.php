@@ -4,13 +4,14 @@
  * Copyright © DiepXuan, Ltd. All rights reserved.
  */
 
-namespace Diepxuan\System;
+namespace Diepxuan\System\Service;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
+use Diepxuan\System\Service\Cloudflare;
 
 class Ddns extends Model
 {
@@ -21,7 +22,7 @@ class Ddns extends Model
 
     protected $serviceMappings = [
         // Add your other mappings here
-        self::SERVICE_CF => \App\Models\Admin\Ddns\Cloudflare::class
+        self::SERVICE_CF => Cloudflare::class
     ];
 
     /**
