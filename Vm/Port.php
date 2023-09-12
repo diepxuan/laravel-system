@@ -3,7 +3,7 @@
 namespace Diepxuan\System\Vm;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Diepxuan\System\Vm;
+use Diepxuan\System\OperatingSystem\Vm;
 
 class Port
 {
