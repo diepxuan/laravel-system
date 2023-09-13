@@ -1,12 +1,12 @@
 <?php
 
-namespace Diepxuan\System\Vm;
+namespace Diepxuan\System\Cast;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Diepxuan\System\Vm;
 
-class Portopen
+class VmPortOpen
 {
     const PORTTCP = "tcp";
     const PORTUDP = "udp";

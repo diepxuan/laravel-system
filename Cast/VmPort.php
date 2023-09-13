@@ -1,11 +1,11 @@
 <?php
 
-namespace Diepxuan\System\Vm;
+namespace Diepxuan\System\Cast;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Diepxuan\System\OperatingSystem\Vm;
 
-class Port
+class VmPort
 {
     const PORTTCP = "tcp";
     const PORTUDP = "udp";
@@ -23,8 +23,8 @@ class Port
         $tcp = $value[0];
         $udp = $value[1];
         return [
-            'tcp' => $tcp,
-            'udp' => $udp,
+            self::PORTTCP => $tcp,
+            self::PORTUDP => $udp,
         ];
     }
 
@@ -33,7 +33,7 @@ class Port
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Vm $model, string $key, mixed $value, array $attributes)
+    public function set($model, string $key, mixed $value, array $attributes)
     {
         $value = array_filter($value);
         $value = array_replace($model->port, $value);
