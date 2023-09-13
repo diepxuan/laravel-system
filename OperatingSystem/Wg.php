@@ -8,6 +8,7 @@ use Diepxuan\System\OperatingSystem as Os;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Process\Pipe;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
@@ -59,6 +60,15 @@ class Wg
     public static function keyGen()
     {
         $keydir = self::$keydir;
-        return Str::of(Process::run("sudo cat $keydir/server_private.key")->output())->trim();
+        return Process::pipe(
+            [
+                "sudo mkdir -p $keydir",
+                "sudo chmod 755 $keydir",
+                "wg genkey | sudo tee $keydir/server_private.key | wg pubkey | sudo tee $keydir/server_public.key >/dev/null",
+            ]
+            // , function (string $type, string $output) {
+            //     echo $output;
+            // }
+        )->output();
     }
 }
