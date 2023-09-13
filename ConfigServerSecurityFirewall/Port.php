@@ -3,7 +3,7 @@
 namespace Diepxuan\System\ConfigServerSecurityFirewall;
 
 use Illuminate\Support\Str;
-use Diepxuan\System\Vm;
+use Diepxuan\System\OperatingSystem\Vm;
 
 trait Port
 {

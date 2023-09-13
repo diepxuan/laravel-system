@@ -6,7 +6,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Diepxuan\System\Vm;
+use Diepxuan\System\OperatingSystem\Vm;
 use App\Helpers\Str;
 
 trait Cluster

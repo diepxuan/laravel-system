@@ -13,10 +13,7 @@ class Package extends Model
 {
     public static function isInstalled($package, $output = true): bool
     {
-        $package = $package instanceof Collection ? $package->toArray() : $package;
-        $package = is_array($package) ? $package : func_get_args();
-
-        return collect($package)
+        return Collection::wrap($package)
             ->map(function ($package) {
                 return Str::of(Process::run("dpkg -s $package 2>/dev/null | grep 'install ok installed' >/dev/null 2>&1 && echo isInstalled")->output())->trim()->exactly('isInstalled');
             })
@@ -28,10 +25,7 @@ class Package extends Model
 
     public static function install($package, $output = true)
     {
-        $package = $package instanceof Collection ? $package->toArray() : $package;
-        $package = is_array($package) ? $package : func_get_args();
-
-        collect($package)
+        Collection::wrap($package)
             ->map(function ($package) {
                 return Process::run("sudo apt install -y $package");
             });

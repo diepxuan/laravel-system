@@ -171,7 +171,7 @@ mq-ww.ecouser.net";
     public function wgPri(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => $value ??= array_replace(['', ''], $this->wgke ?: [])[0],
+            get: fn (mixed $value, array $attributes) => $value ??= array_replace(['', ''], $this->wgkey ?: [])[0],
             // set: fn (mixed $value, array $attributes) => $this->wgkey = dd(array_replace(['', ''], Str::of($attributes['wgkey'])->replaceStart('["', '')->replaceEnd('"]', '')->explode('","')->toArray(), [0 => $value])
         );
     }
