@@ -24,9 +24,9 @@ class Wg
 
     public static function install()
     {
-        $package = collect(self::$package)->implode(' ');
+        $package = collect(self::$package);
         if (Package::isInstalled($package)) return;
-        Process::run("sudo apt install -y $package");
+        return Package::install($package);
     }
 
     public static function isInstalled(): bool
