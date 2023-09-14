@@ -21,7 +21,7 @@ trait Information
 
     public static function getHostDomain(): string
     {
-        return Str::of(Process::run("hostname -d")->output())->trim() ?: "diepxuan.com";
+        return Str::of(Process::run("hostname -d")->output())->trim()->whenEmpty(fn () => "diepxuan.com");
     }
 
     public static function getHostFullName(): string
