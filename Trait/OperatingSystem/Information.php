@@ -16,12 +16,12 @@ trait Information
 
     public static function getHostName(): string
     {
-        return trim(getHostName() ?: Process::run("hostname -s")->output());
+        return Str::of(Process::run("hostname -s")->output())->trim();
     }
 
     public static function getHostDomain(): string
     {
-        return trim(Process::run("hostname -d")->output() ?: "diepxuan.com");
+        return Str::of(Process::run("hostname -d")->output())->trim() ?: "diepxuan.com";
     }
 
     public static function getHostFullName(): string
