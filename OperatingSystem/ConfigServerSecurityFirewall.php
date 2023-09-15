@@ -2,6 +2,7 @@
 
 namespace Diepxuan\System\OperatingSystem;
 
+use Diepxuan\System\OperatingSystem\Csf;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Process;
@@ -60,9 +61,6 @@ class ConfigServerSecurityFirewall extends Model
 
     public static function apply()
     {
-        $flag = false;
-        $flag = $flag ?: self::rebuildConfiguration();
-        $flag = $flag ?: self::rebuildIptablesRules();
-        if ($flag) return Process::run("sudo csf -ra")->output();
+        return Csf::apply();
     }
 }
