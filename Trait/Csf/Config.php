@@ -1,6 +1,6 @@
 <?php
 
-namespace Diepxuan\System\ConfigServerSecurityFirewall;
+namespace Diepxuan\System\Trait\Csf;
 
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\File;

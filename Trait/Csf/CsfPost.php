@@ -1,6 +1,6 @@
 <?php
 
-namespace Diepxuan\System\ConfigServerSecurityFirewall;
+namespace Diepxuan\System\Trait\Csf;
 
 use Diepxuan\System\OperatingSystem as OS;
 use Illuminate\Support\Facades\Process;

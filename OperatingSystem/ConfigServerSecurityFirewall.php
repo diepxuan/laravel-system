@@ -14,38 +14,28 @@ class ConfigServerSecurityFirewall extends Model
     public function isInstall(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => self::isInstalled(),
+            get: fn (mixed $value, array $attributes) => Csf::isInstalled(),
         );
-    }
-
-    public static function isInstalled(): bool
-    {
-        return Str::of(Process::run('command -v csf')->output())->isNotEmpty();
-    }
-
-    public static function getVersion()
-    {
-        return Str::of(preg_replace('/csf: ([\w\d]+)/i', '$1', Process::run("sudo csf -v | grep csf:")->output()))->trim();
     }
 
     public function version(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => self::getVersion(),
+            get: fn (mixed $value, array $attributes) => Csf::getVersion(),
         );
     }
 
     /**
      * Fix missing iptables default path for csf cmd
      */
-    function iptables(): void
+    public function iptables(): void
     {
         $this->_iptables('iptables');
         $this->_iptables('iptables-save');
         $this->_iptables('iptables-restore');
     }
 
-    function _iptables($command): void
+    protected function _iptables($command): void
     {
         $cmdPath    = Process::run("command -v $command")->output();
         $cmdDefault = "/sbin/$command";
@@ -54,7 +44,7 @@ class ConfigServerSecurityFirewall extends Model
             Process::run("sudo ln $(which $command) /sbin/$command");
     }
 
-    public static function apply()
+    public function apply()
     {
         return Csf::apply();
     }

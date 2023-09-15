@@ -1,6 +1,6 @@
 <?php
 
-namespace Diepxuan\System\ConfigServerSecurityFirewall;
+namespace Diepxuan\System\Trait\Csf;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;

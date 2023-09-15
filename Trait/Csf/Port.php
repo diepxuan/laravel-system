@@ -1,6 +1,6 @@
 <?php
 
-namespace Diepxuan\System\ConfigServerSecurityFirewall;
+namespace Diepxuan\System\Trait\Csf;
 
 use Illuminate\Support\Str;
 use Diepxuan\System\OperatingSystem\Vm;
