@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Diepxuan\System\Trait\Csf\Cluster;
+use Diepxuan\System\Trait\Csf\Port;
 
 trait Config
 {
-    use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
-    use \Diepxuan\System\ConfigServerSecurityFirewall\Port;
+    use Cluster, Port;
 
     private static $CONFPATH = '/etc/csf/csf.conf';
     protected $config = null;
