@@ -2,20 +2,15 @@
 
 namespace Diepxuan\System\OperatingSystem;
 
-use Diepxuan\System\OperatingSystem\Csf;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Diepxuan\System\OperatingSystem\Csf;
+use Diepxuan\System\Component\Process;
 
 class ConfigServerSecurityFirewall extends Model
 {
-    use \Diepxuan\System\ConfigServerSecurityFirewall\Config;
-    use \Diepxuan\System\ConfigServerSecurityFirewall\Cluster;
-    use \Diepxuan\System\ConfigServerSecurityFirewall\Port;
-    use \Diepxuan\System\ConfigServerSecurityFirewall\CsfPost;
-
     public function isInstall(): Attribute
     {
         return Attribute::make(
