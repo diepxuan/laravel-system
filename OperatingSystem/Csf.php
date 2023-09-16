@@ -19,7 +19,7 @@ use Illuminate\Support\Arr;
 
 class Csf
 {
-    use Allow, Cluster, Config, CsfPost, Port;
+    use Allow, Config, CsfPost;
 
     protected $config = null;
     private static $CONFPATH = '/etc/csf/csf.conf';
@@ -32,9 +32,10 @@ class Csf
     public static function apply()
     {
         $flag = false;
-        $flag = $flag ?: self::rebuildConfiguration();
-        $flag = $flag ?: self::rebuildIptablesRules();
-        if ($flag) return Process::run("sudo csf -ra")->output();
+        $flag = $flag ?: self::rebuildCsfAllow();
+        // $flag = $flag ?: self::rebuildConfiguration();
+        // $flag = $flag ?: self::rebuildIptablesRules();
+        // if ($flag) return Process::run("sudo csf -ra")->output();
     }
 
     public static function getVersion()

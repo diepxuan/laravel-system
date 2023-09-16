@@ -39,7 +39,9 @@ trait Cluster
             return $return->all();
         })->flatten());
 
-        $value = $value->filter()->unique()->sort();
+        $value = $value->filter()
+            ->filter(fn ($ip) => filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+            ->unique()->sort();
         return $value;
     }
 }
