@@ -10,9 +10,6 @@ use Illuminate\Support\Str;
 
 trait Allow
 {
-    use Cluster;
-    // Include /etc/ductn/csf.allow
-
     protected static function rebuildCsfAllow()
     {
         $csfAllow = Str::of(Process::run("sudo cat /etc/csf/csf.allow")->output())->trim();

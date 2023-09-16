@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Diepxuan\System\Component\Process;
 use Diepxuan\System\Trait\Csf\Allow;
-use Diepxuan\System\Trait\Csf\Cluster;
+use Diepxuan\System\Trait\Csf\Dyndns;
 use Diepxuan\System\Trait\Csf\Config;
 use Diepxuan\System\Trait\Csf\CsfPost;
 use Diepxuan\System\Trait\Csf\Port;
@@ -19,7 +19,7 @@ use Illuminate\Support\Arr;
 
 class Csf
 {
-    use Allow, Config, CsfPost;
+    use Allow, Config, CsfPost, Dyndns;
 
     protected $config = null;
     private static $CONFPATH = '/etc/csf/csf.conf';
@@ -32,10 +32,11 @@ class Csf
     public static function apply()
     {
         $flag = false;
+        $flag = $flag ?: self::rebuildCsfDyndns();
         $flag = $flag ?: self::rebuildCsfAllow();
-        // $flag = $flag ?: self::rebuildConfiguration();
-        // $flag = $flag ?: self::rebuildIptablesRules();
-        // if ($flag) return Process::run("sudo csf -ra")->output();
+        $flag = $flag ?: self::rebuildConfiguration();
+        $flag = $flag ?: self::rebuildIptablesRules();
+        if ($flag) return Process::run("sudo csf -ra")->output();
     }
 
     public static function getVersion()
