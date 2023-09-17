@@ -87,12 +87,6 @@ class Vm extends Model
      */
     protected $keyType = 'string';
 
-    public function getNameAttribute($name)
-    {
-        $name = $name ?: $this->vm_id;
-        return $name;
-    }
-
     public function parent(): BelongsTo
     {
         return $this->belongsTo(
@@ -113,26 +107,12 @@ class Vm extends Model
         );
     }
 
-    public function getDomainsAttribute($domains)
+    public function name(): Attribute
     {
-        $_domains = Domain::all();
-        foreach ($_domains as $domain) {
-            $domain = $domain->name;
-            $domains .= "$domain";
-            $domains .= "\n";
-        }
-        $domains = trim($domains);
-        $domains .= "
-windows.net
-digicert.com
-servicebus.windows.net
-msappproxy.net
-security.ubuntu.com
-ppa.launchpad.net
-php.launchpad.net
-launchpad.net
-";
-        return $domains;
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $value ??= $this->vm_id,
+            // set: fn (mixed $value, array $attributes) => $this->wgkey = dd(array_replace(['', ''], Str::of($attributes['wgkey'])->replaceStart('["', '')->replaceEnd('"]', '')->explode('","')->toArray(), [0 => $value])
+        );
     }
 
     public function wgPri(): Attribute
@@ -242,6 +222,10 @@ launchpad.net
             $model->wgkey = [$model->wg_pri, $model->wg_pub];
             unset($model->wg_pri);
             unset($model->wg_pub);
+        });
+
+        static::updated(function (Vm $model) {
+            $model->dnsUpdate();
         });
     }
 }

@@ -76,19 +76,11 @@ class Cloudflare extends Model
         $dnsRepository  = new \Cloudflare\API\Endpoints\DNS($adapter);
 
         $listZones = collect($zoneRepository->listZones($this->zone_identifier)->result);
-        // Log::info($listZones);
         $listZones->each(function ($zone) use ($dnsRepository, $content) {
-            // Log::info($zone->name);
-            // Log::info($zone->id);
-
             $listDns = collect($dnsRepository->listRecords($zone->id, 'A', $this->identifier)->result);
-            // Log::info($listDns);
             $listDns->each(function ($dns) use ($dnsRepository, $content) {
-                if ($dns->content == $content)
-                    return;
-
+                if ($dns->content == $content) return;
                 $dns->content = $content;
-                // Log::info((array) $dns);
                 $dnsRepository->updateRecordDetails($dns->zone_id, $dns->id, (array) $dns);
             });
         });
@@ -104,7 +96,6 @@ class Cloudflare extends Model
         parent::boot();
 
         static::addGlobalScope("ddns.cloudflare", function (Builder $builder) {
-            // $builder->whereNotEmpty('port');
             $builder->where('service', 'CloudFlare');
         });
     }
