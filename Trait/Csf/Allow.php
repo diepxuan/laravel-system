@@ -24,7 +24,7 @@ trait Allow
         return $flag;
     }
 
-    protected static function getCsfAllowIpLst(): Collection
+    public static function getCsfAllowIpLst(): Collection
     {
         return Vm::all()
             ->map(function (Vm $vm) {
