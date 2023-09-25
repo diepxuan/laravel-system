@@ -6,7 +6,7 @@ use Diepxuan\System\OperatingSystem as OS;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Diepxuan\System\Vm;
+use Diepxuan\System\OperatingSystem\Vm;
 
 trait CsfPost
 {
