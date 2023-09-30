@@ -14,11 +14,6 @@ class Process extends BaseProcess
      */
     public static function run(array|string|null $command = null, callable|null $output = null): ProcessResult
     {
-
-        if (is_string($command) && Str::of($command)->startsWith("sudo ")) {
-            $command = Str::of($command)
-                ->toString();
-        }
         return parent::run($command, $output);
     }
 }

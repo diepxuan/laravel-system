@@ -19,7 +19,7 @@ class Csf
 
     public static function isInstalled(): bool
     {
-        return Str::of(Process::run('command -v csf')->output())->isNotEmpty();
+        return Str::of(Process::run('[ -d "/etc/csf" ] && command -v csf >/dev/null && sudo csf -e 2>&1 | grep -q "are not disabled!" && echo isInstalled')->output())->trim()->is('isInstalled');
     }
 
     public static function apply()
